@@ -76,11 +76,15 @@ app.post("/upload", (req, res) => {
         msg: err
       });
     } else {
-      console.log(req.file);
 
       const imageModel = new ImageModel();
       imageModel.name = req.file.filename;
-      imageModel.path = req.file.path;
+
+      // Remove "public/" from path=======
+      let filePath = Array.from(req.file.path);
+      filePath.splice(0,7);
+      imageModel.path = filePath.join('')
+      //===================================
 
       imageModel
         .save()
